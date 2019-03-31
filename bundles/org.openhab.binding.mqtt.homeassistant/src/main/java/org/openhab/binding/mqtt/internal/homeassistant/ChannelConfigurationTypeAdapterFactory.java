@@ -109,7 +109,7 @@ public class ChannelConfigurationTypeAdapterFactory implements TypeAdapterFactor
         };
     }
 
-    private void expandTidleInTopics(BaseChannelConfiguration config) {
+    private void expandTidleInTopics(BaseChannelConfiguration config) throws IOException {
         Class<?> type = config.getClass();
 
         String tilde = config.tilde;
@@ -135,9 +135,9 @@ public class ChannelConfigurationTypeAdapterFactory implements TypeAdapterFactor
 
                         field.set(config, newValue);
                     } catch (IllegalArgumentException e) {
-                        throw new RuntimeException(e);
+                        throw new IOException(e);
                     } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
+                        throw new IOException(e);
                     }
                 }
             }

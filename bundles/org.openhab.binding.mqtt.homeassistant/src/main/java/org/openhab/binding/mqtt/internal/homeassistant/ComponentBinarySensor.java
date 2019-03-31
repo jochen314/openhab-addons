@@ -15,6 +15,7 @@ package org.openhab.binding.mqtt.internal.homeassistant;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.mqtt.values.OnOffValue;
+import org.openhab.binding.mqtt.values.Value;
 
 /**
  * A MQTT BinarySensor, following the https://www.home-assistant.io/components/binary_sensor.mqtt/ specification.
@@ -50,10 +51,12 @@ public class ComponentBinarySensor extends AbstractComponent<ComponentBinarySens
             throw new UnsupportedOperationException("Component:Sensor does not support forced updates");
         }
 
-        buildChannel(sensorChannelID, new OnOffValue(channelConfiguration.payload_on, channelConfiguration.payload_off),
-                channelConfiguration.name).listener(componentConfiguration.getUpdateListener())//
-                        .stateTopic(channelConfiguration.state_topic, channelConfiguration.value_template)//
-                        .unit(channelConfiguration.unit_of_measurement)//
-                        .build();
+        Value value = new OnOffValue(channelConfiguration.payload_on, channelConfiguration.payload_off);
+
+        buildChannel(sensorChannelID, value, "State")//
+                .listener(componentConfiguration.getUpdateListener())//
+                .stateTopic(channelConfiguration.state_topic, channelConfiguration.value_template)//
+                .unit(channelConfiguration.unit_of_measurement)//
+                .build();
     }
 }

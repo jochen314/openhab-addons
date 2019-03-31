@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.mqtt.values.OnOffValue;
+import org.openhab.binding.mqtt.values.Value;
 
 /**
  * A MQTT lock, following the https://www.home-assistant.io/components/lock.mqtt/ specification.
@@ -24,7 +25,7 @@ import org.openhab.binding.mqtt.values.OnOffValue;
  */
 @NonNullByDefault
 public class ComponentLock extends AbstractComponent<ComponentLock.ChannelConfiguration> {
-    public static final String switchChannelID = "lock"; // Randomly chosen channel "ID"
+    public static final String lockChannelID = "lock"; // Randomly chosen channel "ID"
 
     /**
      * Configuration class for MQTT component
@@ -50,11 +51,11 @@ public class ComponentLock extends AbstractComponent<ComponentLock.ChannelConfig
             throw new UnsupportedOperationException("Component:Lock does not support forced optimistic mode");
         }
 
-        buildChannel(switchChannelID,
-                new OnOffValue(channelConfiguration.payload_lock, channelConfiguration.payload_unlock),
-                channelConfiguration.name).listener(componentConfiguration.getUpdateListener())//
-                        .stateTopic(channelConfiguration.state_topic, channelConfiguration.value_template)//
-                        .commandTopic(channelConfiguration.command_topic, channelConfiguration.retain)//
-                        .build();
+        Value value = new OnOffValue(channelConfiguration.payload_lock, channelConfiguration.payload_unlock);
+
+        buildChannel(lockChannelID, value, "State").listener(componentConfiguration.getUpdateListener())//
+                .stateTopic(channelConfiguration.state_topic, channelConfiguration.value_template)//
+                .commandTopic(channelConfiguration.command_topic, channelConfiguration.retain)//
+                .build();
     }
 }

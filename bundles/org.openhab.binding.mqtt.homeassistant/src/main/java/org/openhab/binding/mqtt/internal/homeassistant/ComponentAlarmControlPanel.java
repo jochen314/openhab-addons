@@ -15,6 +15,7 @@ package org.openhab.binding.mqtt.internal.homeassistant;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.mqtt.values.TextValue;
+import org.openhab.binding.mqtt.values.Value;
 
 /**
  * A MQTT alarm control panel, following the https://www.home-assistant.io/components/alarm_control_panel.mqtt/
@@ -61,27 +62,35 @@ public class ComponentAlarmControlPanel extends AbstractComponent<ComponentAlarm
         final String[] state_enum = { channelConfiguration.state_disarmed, channelConfiguration.state_armed_home,
                 channelConfiguration.state_armed_away, channelConfiguration.state_pending,
                 channelConfiguration.state_triggered };
-        buildChannel(stateChannelID, new TextValue(state_enum), channelConfiguration.name)
-                .listener(componentConfiguration.getUpdateListener())
+
+        Value value = new TextValue(state_enum);
+
+        buildChannel(stateChannelID, value, "State").listener(componentConfiguration.getUpdateListener())
                 .stateTopic(channelConfiguration.state_topic, channelConfiguration.value_template)//
                 .build();
 
+        // TODO: How do we check for the code in the front-end?
+        // It could be dangerous to allow disarming the alarm thru the web without the code....
+
         String command_topic = channelConfiguration.command_topic;
         if (command_topic != null) {
-            buildChannel(switchDisarmChannelID, new TextValue(new String[] { channelConfiguration.payload_disarm }),
-                    channelConfiguration.name).listener(componentConfiguration.getUpdateListener())//
-                            .commandTopic(command_topic, channelConfiguration.retain)//
-                            .build();
+            value = new TextValue(new String[] { channelConfiguration.payload_disarm });
+            buildChannel(switchDisarmChannelID, value, "Disarm")//
+                    .listener(componentConfiguration.getUpdateListener())//
+                    .commandTopic(command_topic, channelConfiguration.retain)//
+                    .build();
 
-            buildChannel(switchArmHomeChannelID, new TextValue(new String[] { channelConfiguration.payload_arm_home }),
-                    channelConfiguration.name).listener(componentConfiguration.getUpdateListener())//
-                            .commandTopic(command_topic, channelConfiguration.retain)//
-                            .build();
+            value = new TextValue(new String[] { channelConfiguration.payload_arm_home });
+            buildChannel(switchArmHomeChannelID, value, "Arm")//
+                    .listener(componentConfiguration.getUpdateListener())//
+                    .commandTopic(command_topic, channelConfiguration.retain)//
+                    .build();
 
-            buildChannel(switchArmAwayChannelID, new TextValue(new String[] { channelConfiguration.payload_arm_away }),
-                    channelConfiguration.name).listener(componentConfiguration.getUpdateListener())//
-                            .commandTopic(command_topic, channelConfiguration.retain)//
-                            .build();
+            value = new TextValue(new String[] { channelConfiguration.payload_arm_away });
+            buildChannel(switchArmAwayChannelID, value, "Away")//
+                    .listener(componentConfiguration.getUpdateListener())//
+                    .commandTopic(command_topic, channelConfiguration.retain)//
+                    .build();
         }
     }
 }

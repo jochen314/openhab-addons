@@ -157,8 +157,10 @@ public class CChannel {
             return this;
         }
 
-        public Builder unit(String unit) {
-            this.unit = unit;
+        public Builder unit(@Nullable String unit) {
+            if (unit != null) {
+                this.unit = unit;
+            }
             return this;
         }
 

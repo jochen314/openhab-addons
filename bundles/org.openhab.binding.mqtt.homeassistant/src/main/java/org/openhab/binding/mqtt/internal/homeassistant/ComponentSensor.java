@@ -14,7 +14,9 @@ package org.openhab.binding.mqtt.internal.homeassistant;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.mqtt.values.NumberValue;
 import org.openhab.binding.mqtt.values.TextValue;
+import org.openhab.binding.mqtt.values.Value;
 
 /**
  * A MQTT sensor, following the https://www.home-assistant.io/components/sensor.mqtt/ specification.
@@ -33,12 +35,14 @@ public class ComponentSensor extends AbstractComponent<ComponentSensor.ChannelCo
             super("MQTT Sensor");
         }
 
-        protected String unit_of_measurement = "";
+        protected @Nullable String unit_of_measurement;
         protected @Nullable String device_class;
         protected boolean force_update = false;
         protected int expire_after = 0;
 
         protected String state_topic = "";
+
+        protected @Nullable String json_attributes_topic;
     };
 
     public ComponentSensor(CFactory.ComponentConfiguration componentConfiguration) {
@@ -48,8 +52,13 @@ public class ComponentSensor extends AbstractComponent<ComponentSensor.ChannelCo
             throw new UnsupportedOperationException("Component:Sensor does not support forced updates");
         }
 
-        buildChannel(sensorChannelID, new TextValue(), channelConfiguration.name)
-                .listener(componentConfiguration.getUpdateListener())//
+        Value value;
+        if (channelConfiguration.unit_of_measurement != null) {
+            value = new NumberValue(null, null, null);
+        } else {
+            value = new TextValue();
+        }
+        buildChannel(sensorChannelID, value, "Sensor").listener(componentConfiguration.getUpdateListener())//
                 .stateTopic(channelConfiguration.state_topic, channelConfiguration.value_template)//
                 .unit(channelConfiguration.unit_of_measurement)//
                 .build();

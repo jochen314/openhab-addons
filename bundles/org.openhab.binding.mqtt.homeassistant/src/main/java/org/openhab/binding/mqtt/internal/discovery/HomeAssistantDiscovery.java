@@ -70,6 +70,7 @@ public class HomeAssistantDiscovery extends AbstractMQTTDiscovery {
         HA_COMP_TO_NAME.put("lock", "Lock");
         HA_COMP_TO_NAME.put("sensor", "Sensor");
         HA_COMP_TO_NAME.put("switch", "Switch");
+        HA_COMP_TO_NAME.put("vacuum", "Vacuum");
     }
 
     static final String BASE_TOPIC = "homeassistant";

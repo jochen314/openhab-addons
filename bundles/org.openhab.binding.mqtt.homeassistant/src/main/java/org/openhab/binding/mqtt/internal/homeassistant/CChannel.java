@@ -58,11 +58,11 @@ import org.openhab.binding.mqtt.values.Value;
 public class CChannel {
     private static final String JINJA = "JINJA";
 
-    private final ChannelUID channelUID;
-    private final ChannelState channelState; // Channel state (value)
-    private final Channel channel; // ESH Channel
-    private final ChannelType type;
-    private final ChannelTypeUID channelTypeUID;
+    public final ChannelUID channelUID;
+    public final ChannelState channelState; // Channel state (value)
+    public final Channel channel; // ESH Channel
+    public final ChannelType type;
+    public final ChannelTypeUID channelTypeUID;
 
     private CChannel(ChannelUID channelUID, ChannelState channelState, Channel channel, ChannelType type,
             ChannelTypeUID channelTypeUID) {
@@ -72,18 +72,6 @@ public class CChannel {
         this.channel = channel;
         this.type = type;
         this.channelTypeUID = channelTypeUID;
-    }
-
-    public ChannelUID getChannelUID() {
-        return channelUID;
-    }
-
-    public Channel getChannel() {
-        return channel;
-    }
-
-    public ChannelState getState() {
-        return channelState;
     }
 
     public CompletableFuture<@Nullable Void> stop() {

@@ -220,7 +220,7 @@ public class HomeAssistantThingHandler extends AbstractMQTTThingHandler
         if (componentChannel == null) {
             return null;
         }
-        return componentChannel.getState();
+        return componentChannel.channelState;
     }
 
     /**
@@ -273,7 +273,7 @@ public class HomeAssistantThingHandler extends AbstractMQTTThingHandler
             // Add channels to Thing
             for (AbstractComponent<?> e : haComponents.values()) {
                 for (CChannel entry : e.channelTypes().values()) {
-                    channels.add(entry.getChannel());
+                    channels.add(entry.channel);
                 }
             }
         }

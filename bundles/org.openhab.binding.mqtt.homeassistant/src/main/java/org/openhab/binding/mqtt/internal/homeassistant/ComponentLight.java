@@ -97,9 +97,9 @@ public class ComponentLight extends AbstractComponent<ComponentLight.ChannelConf
     protected CChannel brightnessChannel;
     private final @Nullable ChannelStateUpdateListener channelStateUpdateListener;
 
-    public ComponentLight(CFactory.ComponentConfiguration builder) {
-        super(builder, ChannelConfiguration.class);
-        this.channelStateUpdateListener = builder.getUpdateListener();
+    public ComponentLight(CFactory.ComponentConfiguration componentConfiguration) {
+        super(componentConfiguration, ChannelConfiguration.class);
+        this.channelStateUpdateListener = componentConfiguration.getUpdateListener();
         ColorValue value = new ColorValue(true, channelConfiguration.payload_on, channelConfiguration.payload_off, 100);
 
         // Create three MQTT subscriptions and use this class object as update listener
@@ -143,7 +143,7 @@ public class ComponentLight extends AbstractComponent<ComponentLight.ChannelConf
     public void updateChannelState(ChannelUID channelUID, State value) {
         ChannelStateUpdateListener listener = channelStateUpdateListener;
         if (listener != null) {
-            listener.updateChannelState(colorChannel.getChannelUID(), value);
+            listener.updateChannelState(colorChannel.channelUID, value);
         }
     }
 
@@ -154,7 +154,7 @@ public class ComponentLight extends AbstractComponent<ComponentLight.ChannelConf
     public void postChannelCommand(ChannelUID channelUID, Command value) {
         ChannelStateUpdateListener listener = channelStateUpdateListener;
         if (listener != null) {
-            listener.postChannelCommand(colorChannel.getChannelUID(), value);
+            listener.postChannelCommand(colorChannel.channelUID, value);
         }
     }
 
@@ -165,7 +165,7 @@ public class ComponentLight extends AbstractComponent<ComponentLight.ChannelConf
     public void triggerChannel(ChannelUID channelUID, String eventPayload) {
         ChannelStateUpdateListener listener = channelStateUpdateListener;
         if (listener != null) {
-            listener.triggerChannel(colorChannel.getChannelUID(), eventPayload);
+            listener.triggerChannel(colorChannel.channelUID, eventPayload);
         }
     }
 }

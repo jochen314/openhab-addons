@@ -37,9 +37,9 @@ public class CFactory {
      *
      * @param thingUID The Thing UID that this component will belong to.
      * @param haID The location of this component. The HomeAssistant ID contains the object-id, node-id and
-     *            component-id.
+     *     component-id.
      * @param configJSON Most components expect a "name", a "state_topic" and "command_topic" like with
-     *            "{name:'Name',state_topic:'homeassistant/switch/0/object/state',command_topic:'homeassistant/switch/0/object/set'".
+     *     "{name:'Name',state_topic:'homeassistant/switch/0/object/state',command_topic:'homeassistant/switch/0/object/set'".
      * @param updateListener A channel state update listener
      * @return A HA MQTT Component
      */
@@ -71,6 +71,8 @@ public class CFactory {
                     return new ComponentSensor(componentConfiguration);
                 case "switch":
                     return new ComponentSwitch(componentConfiguration);
+                case "vacuum":
+                    return new ComponentVacuum(componentConfiguration);
             }
         } catch (UnsupportedOperationException e) {
             logger.warn("Not supported", e);

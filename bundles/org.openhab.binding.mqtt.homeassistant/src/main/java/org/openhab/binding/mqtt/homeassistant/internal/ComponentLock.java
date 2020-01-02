@@ -37,9 +37,12 @@ public class ComponentLock extends AbstractComponent<ComponentLock.ChannelConfig
         protected boolean optimistic = false;
 
         protected String state_topic = "";
+        protected @Nullable String command_topic;
         protected String payload_lock = "LOCK";
         protected String payload_unlock = "UNLOCK";
-        protected @Nullable String command_topic;
+
+        protected @Nullable String json_attributes_topic;
+        protected @Nullable String json_attributes_template;
     }
 
     public ComponentLock(CFactory.ComponentConfiguration componentConfiguration) {
@@ -54,7 +57,8 @@ public class ComponentLock extends AbstractComponent<ComponentLock.ChannelConfig
                 new OnOffValue(channelConfiguration.payload_lock, channelConfiguration.payload_unlock),
                 channelConfiguration.name, componentConfiguration.getUpdateListener())//
                         .stateTopic(channelConfiguration.state_topic, channelConfiguration.value_template)//
-                        .commandTopic(channelConfiguration.command_topic, channelConfiguration.retain)//
+                        .commandTopic(channelConfiguration.command_topic, channelConfiguration.retain,
+                                channelConfiguration.qos)//
                         .build();
     }
 }

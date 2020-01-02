@@ -196,13 +196,6 @@ mqttActions.publishMQTT("mytopic","myvalue", true)
 
 The retained argument is optional and if not supplied defaults to `false`.
 
-## Limitations
-
-* The HomeAssistant Fan Components only support ON/OFF.
-* The HomeAssistant Cover Components only support OPEN/CLOSE/STOP.
-* The HomeAssistant Light Component does not support XY color changes.
-* The HomeAssistant Climate Components is not yet supported.
-
 ## Incoming Value Transformation
 
 All mentioned channels allow an optional transformation for incoming MQTT topic values.
